@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+    <message>
+        <name explain="模块名">测试模块</name>
+        <brief explain="模块介绍">测试模块,测试模块,测试模块,测试模块,测试模块,测试模块</brief>
+        <download explain="下载量">100</download>
+        <attention explain="关注量">100</attention>
+        <source explain="生产者">GTH</source>
+    </message>
+    <install>
+        <url explain="地址" from="">file:///home/gao/codeWare/qtProjects/hand_cmake/test/error.html</url>
+        <icon_url explain="图标地址" from="local">../resources/demo1.png</icon_url>
+        <type explain="模块下载类型">default</type>
+        <expand explain="拓展" from="">None</expand>
+    </install>
+</module>
