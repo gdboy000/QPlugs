@@ -9,6 +9,8 @@
 #include <QString>
 
 #define SHOWMESSAGE(str) CDebugWindow::GetWindow()->ShowMessage(QString(str)+QString("( at %1 %2)").arg(QString(__FILE__).split('/').last()).arg(__LINE__))
+#define SHOWWARN(str) CDebugWindow::GetWindow()->ShowWarning(QString(str)+QString("( at %1 %2)").arg(QString(__FILE__).split('/').last()).arg(__LINE__))
+#define SHOWERROR(str) CDebugWindow::GetWindow()->ShowError(QString(str)+QString("( at %1 %2)").arg(QString(__FILE__).split('/').last()).arg(__LINE__))
 
 
 QT_BEGIN_NAMESPACE
@@ -28,6 +30,8 @@ public:
     static CDebugWindow * GetWindow();//获取窗口单例
     static void DestroyWindow();//销毁窗口单例
     static void ShowWindow();//展示窗口单例
+protected:
+    void contextMenuEvent(QContextMenuEvent *event) override;
 private:
     Ui::CDebugMessage *_ui;
     int _count = 0;

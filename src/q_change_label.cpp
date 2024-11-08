@@ -29,16 +29,16 @@ void CCurveLabel::paintEvent(QPaintEvent* e)
         painter.setRenderHints(QPainter::Antialiasing |
                                QPainter::SmoothPixmapTransform);
         QPainterPath path;
-        int round = qMin(width(), height());
-        path.addEllipse(0, 0, round, round);
+        int round = qMin(width()-10, height()-10);
+        path.addEllipse(5, 5, round, round);
         painter.setClipPath(path);
         oldMap = pixmap(); //获取原来的
         if (m_set)
         {
-            painter.drawPixmap(-1, -1, width() + 10, height() + 10, oldMap);
+            painter.drawPixmap(0, 0, width() + 10, height() + 10, oldMap);
         }
         else {
-            painter.drawPixmap(-1, -1, width() + 10, height() + 10, oldMap);
+            painter.drawPixmap(0, 0, width() + 10, height() + 10, oldMap);
         }
 
 

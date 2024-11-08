@@ -23,7 +23,6 @@ CWebModulesWidget::~CWebModulesWidget() {
 }
 
 void CWebModulesWidget::LoadingUrl(const QString &url) {
-    qDebug()<<"url: "<<url<<'\n';
     _ui->webView->load(url);
     //_ui->webView->show();
 }

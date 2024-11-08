@@ -4,7 +4,8 @@
 
 // You may need to build the project (run Qt uic code generator) to get "ui_GUIDebugMessage.h" resolved
 #include <QDateTime>
-
+#include <QMenu>
+#include <QContextMenuEvent>
 #include "qui_debug_log_window.h"
 #include "ui_qui_debug_log_window.h"
 
@@ -14,6 +15,7 @@ CDebugWindow::CDebugWindow(QWidget *parent) :
     QDialog(parent), _ui(new Ui::CDebugMessage) {
     _ui->setupUi(this);
     //this->showMinimized();//直接最小化显示,也会调用show函数
+    _ui->textEdit->setContextMenuPolicy(Qt::NoContextMenu);
 }
 
 CDebugWindow::~CDebugWindow() {
@@ -57,6 +59,15 @@ void CDebugWindow::ShowWindow() {
     }
 }
 
+void CDebugWindow::contextMenuEvent(QContextMenuEvent *event) {
+    QMenu menu(this);
+    QAction *action = menu.addAction("清屏");
+    // 连接信号和槽来处理菜单项的触发
+    connect(action, &QAction::triggered, this, &CDebugWindow::Clear);
+    // 在鼠标右键按下的位置显示菜单
+    menu.exec(event->globalPos());
+    event->accept();
+}
 
 
 

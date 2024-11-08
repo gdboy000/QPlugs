@@ -14,15 +14,18 @@ CFunctionWidget::CFunctionWidget(QWidget *parent)
     : QWidget(parent)
     , _ui(new Ui::CFunctionWidget){
     _ui->setupUi(this);
-    // _normalSize = this->size();
     _ui->widget2_2->hide();//初始化隐藏分割窗口
     _ui->widget2_1->hide();//菜单窗口隐藏
     this->setWindowFlags(Qt::FramelessWindowHint | windowFlags());
+    //设置窗口居中
+    const QScreen *pScreen = QGuiApplication::primaryScreen();
+    this->move((pScreen->geometry().width() - this->width()) / 2,(pScreen->geometry().height() - this->height()) / 2);
     _ui->splitter->setSizes(QList<int>() << 1 << 4);//设置分割器初始化分割比例
     _initConnect();
 }
 
 CFunctionWidget::~CFunctionWidget(){
+    qDebug()<<"析构function\n";
     delete _ui;
     if(nullptr == _menuWidget) {
         delete _menuWidget;

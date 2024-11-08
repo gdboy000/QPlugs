@@ -28,7 +28,11 @@ CCameraControl::CCameraControl(const std::string& filename) {
     }
 }
 
-
+/**
+ * 打开摄像头
+ * @param index 摄像头设备索引号
+ * @return 打开是否成功
+ */
 bool CCameraControl::OpenCamera(int index)
 {
     if(_cap.isOpened()) {
@@ -38,22 +42,27 @@ bool CCameraControl::OpenCamera(int index)
     _cap = cv::VideoCapture(index,cv::CAP_V4L2);
     if(_cap.isOpened()) {
         _isOpen = true;
-        _videoWidth = _cap.get(cv::CAP_PROP_FRAME_WIDTH);
-        _videoHeight = _cap.get(cv::CAP_PROP_FRAME_HEIGHT);
-        int x,y;
-        if(_videoWidth >= _videoHeight) {
-            x = (_videoWidth - _videoHeight)/2;
-            _rect = cv::Rect(x,0,_videoHeight,_videoHeight);
-        }
-        else {
-            y = (_videoHeight - _videoWidth)/2;
-            _rect = cv::Rect(0,y,_videoWidth,_videoWidth);
-        }
+        // _videoWidth = _cap.get(cv::CAP_PROP_FRAME_WIDTH);
+        // _videoHeight = _cap.get(cv::CAP_PROP_FRAME_HEIGHT);
+        // int x,y;
+        // if(_videoWidth >= _videoHeight) {
+        //     x = (_videoWidth - _videoHeight)/2;
+        //     _rect = cv::Rect(x,0,_videoHeight,_videoHeight);
+        // }
+        // else {
+        //     y = (_videoHeight - _videoWidth)/2;
+        //     _rect = cv::Rect(0,y,_videoWidth,_videoWidth);
+        // }
         return true;
     }
     return false;
 }
 
+/**
+ * 打开摄像头
+ * @param filename 摄像头设备名
+ * @return 打开是否成功
+ */
 bool CCameraControl::OpenCamera(const std::string& filename)
 {
     if(_cap.isOpened()) {
@@ -63,22 +72,26 @@ bool CCameraControl::OpenCamera(const std::string& filename)
     _cap = cv::VideoCapture(filename,cv::CAP_V4L2);
     if(_cap.isOpened()) {
         _isOpen = true;
-        _videoWidth = _cap.get(cv::CAP_PROP_FRAME_WIDTH);
-        _videoHeight = _cap.get(cv::CAP_PROP_FRAME_HEIGHT);
-        int x,y;
-        if(_videoWidth >= _videoHeight) {
-            x = (_videoWidth - _videoHeight)/2;
-            _rect = cv::Rect(x,0,_videoHeight,_videoHeight);
-        }
-        else {
-            y = (_videoHeight - _videoWidth)/2;
-            _rect = cv::Rect(0,y,_videoWidth,_videoWidth);
-        }
+        // _videoWidth = _cap.get(cv::CAP_PROP_FRAME_WIDTH);
+        // _videoHeight = _cap.get(cv::CAP_PROP_FRAME_HEIGHT);
+        // int x,y;
+        // if(_videoWidth >= _videoHeight) {
+        //     x = (_videoWidth - _videoHeight)/2;
+        //     _rect = cv::Rect(x,0,_videoHeight,_videoHeight);
+        // }
+        // else {
+        //     y = (_videoHeight - _videoWidth)/2;
+        //     _rect = cv::Rect(0,y,_videoWidth,_videoWidth);
+        // }
         return true;
     }
     return false;
 }
 
+/**
+ * 关闭摄像头
+ * @return 关闭之前摄像头状态
+ */
 bool CCameraControl::CloseCamera()
 {
     if(_cap.isOpened())
@@ -94,6 +107,10 @@ bool CCameraControl::CloseCamera()
 
 }
 
+/**
+ * 返回摄像头状态
+ * @return 摄像头状态
+ */
 bool CCameraControl::StatusCamera() const
 {
     if(_cap.isOpened())
@@ -107,9 +124,7 @@ bool CCameraControl::StatusCamera() const
 }
 
 /**
- * 1.判断摄像头是否打开
- * 2.获取cv::Mat frame
- * 3.resize到 传参正确图像 --不正确，应当由调用者来修改尺寸，减少该类的冗余
+ * 获取一帧
  * @param frame (QImage)传出参数
  * @return 函数执行是否成功
  */
@@ -120,25 +135,41 @@ bool CCameraControl::GetFrame(QImage &frame)
     {
         return false;
     }
-    else
-    {
-        _cap >> _frame;
-        cv::Mat _frame_resize;
-        if(!_frame.empty()) {
-            if(_tailorSize.width>0 && _tailorSize.height>0) {
-
-                cv::resize(_frame(_rect),_frame_resize,_tailorSize,cv::INTER_LINEAR);
-            }
-            else {
-                _frame(_rect).copyTo(_frame_resize);
-            }
-            return _cvMat2QImage(_frame_resize,frame);
-        }
-        return false;
+    _cap >> _frame;
+    cv::Mat _frame_resize;
+    if(!_frame.empty()) {
+        // _frame(_rect).copyTo(_frame_resize);
+        // return CvMat2QImage(_frame_resize,frame);
+        return CvMat2QImage(_frame,frame);
     }
+    return false;
 }
 
-bool CCameraControl::_cvMat2QImage(const cv::Mat& mat,QImage &img)
+/**
+ * 获取一帧
+ * @param frame 传出一帧cv::Mat
+ * @return 获取是否成功
+ */
+bool CCameraControl::GetFrame(cv::Mat &frame) {
+    if(!_cap.isOpened())
+    {
+        return false;
+    }
+    _cap >> frame;
+    cv::Mat _frame_resize;
+    if(!frame.empty()) {
+        return true;
+    }
+    return false;
+}
+
+/**
+ * 静态函数 cv::Mat 转 QImage
+ * @param mat cv::Mat一帧
+ * @param img QImage 一帧
+ * @return 转换是否成功
+ */
+bool CCameraControl::CvMat2QImage(const cv::Mat& mat,QImage &img)
 {
     // 8-bits unsigned, NO. OF CHANNELS = 1
     if (mat.type() == CV_8UC1)
@@ -185,10 +216,10 @@ bool CCameraControl::_cvMat2QImage(const cv::Mat& mat,QImage &img)
     }
 }
 
-bool CCameraControl::SetTailorSize(int w, int h) {
-    if(w>0 && h >0) {
-        _tailorSize = cv::Size(w,h);
-        return true;
-    }
-    return false;
-}
+// bool CCameraControl::SetTailorSize(int w, int h) {
+//     if(w>0 && h >0) {
+//         _tailorSize = cv::Size(w,h);
+//         return true;
+//     }
+//     return false;
+// }
