@@ -6,6 +6,7 @@
 CCurveLabel::CCurveLabel(QWidget *parent)
     : QLabel(parent),user_define(false)
 {
+    qDebug()<<"size:  "<<this->width()<<"   "<<this->height();
     m_set = false;
 }
 
@@ -22,26 +23,24 @@ CCurveLabel::~CCurveLabel()
 
 void CCurveLabel::paintEvent(QPaintEvent* e)
 {
+
+    QPainter painter(this);//
+    //设置反锯齿
+    painter.setRenderHints(QPainter::Antialiasing | QPainter::SmoothPixmapTransform);
+    QPen pen;//
+    pen.setStyle(Qt::SolidLine);
+    pen.setWidth(2);
+    pen.setBrush(Qt::black);
+    painter.setPen(pen);
+    QPainterPath path;
+    _round = qMin(width(), height()) - 10;//
+    path.addEllipse(5, 5, _round, _round);
+    painter.drawEllipse(5, 5, _round, _round);
     if (!pixmap().isNull())
     {
-        QPainter painter(this);
-        //设置反锯齿
-        painter.setRenderHints(QPainter::Antialiasing |
-                               QPainter::SmoothPixmapTransform);
-        QPainterPath path;
-        int round = qMin(width()-10, height()-10);
-        path.addEllipse(5, 5, round, round);
         painter.setClipPath(path);
         oldMap = pixmap(); //获取原来的
-        if (m_set)
-        {
-            painter.drawPixmap(0, 0, width() + 10, height() + 10, oldMap);
-        }
-        else {
-            painter.drawPixmap(0, 0, width() + 10, height() + 10, oldMap);
-        }
-
-
+        painter.drawPixmap(0, 0, width(), height(), oldMap);
     }
     else {
         QLabel::paintEvent(e);

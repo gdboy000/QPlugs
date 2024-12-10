@@ -6,15 +6,6 @@
 #include <ui_qui_login_widget.h>
 
 
-// int main(int argc, char *argv[])
-// {
-//     QApplication a(argc, argv);
-//     CLoginWidget w;
-//     w.show();
-//     return a.exec();
-// }
-
-
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);

@@ -1,6 +1,3 @@
-//
-// Created by gao on 24-11-3.
-//
 #include <opencv2/imgproc.hpp>
 #include <iostream>
 #include "face_identify.h"

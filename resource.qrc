@@ -48,5 +48,9 @@
         <file>resources/close-w.png</file>
         <file>resources/qr-code-w.png</file>
         <file>resources/inboxes-w.png</file>
+        <file>resources/background1.png</file>
+        <file>resources/close-rectangle-w.png</file>
+        <file>resources/cog-w.png</file>
+        <file>resources/ban.png</file>
     </qresource>
 </RCC>

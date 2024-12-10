@@ -23,6 +23,8 @@ public:
     virtual bool GetFrame(QImage &frame);//获取一帧QImage
     virtual bool GetFrame(cv::Mat &frame);//获取一帧cv::Mat
     static bool CvMat2QImage(const cv::Mat& mat,QImage &img);//cv::Mat转QImage
+    static bool QImage2CvMat(const QImage &img,cv::Mat& mat);//cv::Mat转QImage
+    static bool BlurQimage(const QImage& src,QImage& dst,int radius);
 private:
     cv::VideoCapture _cap;//摄像头对象
     int _videoWidth = 0;//unused

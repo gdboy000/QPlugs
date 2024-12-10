@@ -20,7 +20,8 @@ public:
     CCurveLabel(QWidget *parent = Q_NULLPTR);
     CCurveLabel(QSize,QWidget* parent = Q_NULLPTR);
     ~CCurveLabel();
-
+    void SetBorder(Qt::PenStyle style, QColor color, int width);
+    int GetRadius(){return _round;}
 
 signals:
     void signClick();
@@ -31,10 +32,14 @@ protected:
     void mouseReleaseEvent(QMouseEvent* ev) override;
 
 private:
+    QColor _color;
+    Qt::PenStyle _style;
+    int _width;
     bool user_define;
     QSize size;
     int key;
     bool m_set;
     QPixmap oldMap;
+    int _round;
 };
 #endif // QUI_CHANGE_LABEL_H

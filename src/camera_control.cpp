@@ -174,6 +174,7 @@ bool CCameraControl::CvMat2QImage(const cv::Mat& mat,QImage &img)
     // 8-bits unsigned, NO. OF CHANNELS = 1
     if (mat.type() == CV_8UC1)
     {
+        qDebug()<<"8-bits unsigned, NO. OF CHANNELS = 1";
         img = QImage(mat.cols, mat.rows, QImage::Format_Indexed8);
         // Set the color table (used to translate colour indexes to qRgb values)
         img.setColorCount(256);
@@ -194,6 +195,7 @@ bool CCameraControl::CvMat2QImage(const cv::Mat& mat,QImage &img)
     // 8-bits unsigned, NO. OF CHANNELS = 3
     else if (mat.type() == CV_8UC3)
     {
+        qDebug()<<"8-bits unsigned, NO. OF CHANNELS = 3";
         // Copy input Mat
         const uchar* pSrc = (const uchar*)mat.data;
         // Create QImage with same dimensions as input Mat
@@ -203,7 +205,7 @@ bool CCameraControl::CvMat2QImage(const cv::Mat& mat,QImage &img)
     }
     else if (mat.type() == CV_8UC4)
     {
-        qDebug() << "CV_8UC4";
+        qDebug()<<"8-bits unsigned, NO. OF CHANNELS = 4";
         // Copy input Mat
         const uchar* pSrc = (const uchar*)mat.data;
         // Create QImage with same dimensions as input Mat
@@ -212,8 +214,39 @@ bool CCameraControl::CvMat2QImage(const cv::Mat& mat,QImage &img)
     }
     else
     {
+        qDebug()<<"ERROR: Mat could not be converted to QImage.";
         return false;
     }
+}
+
+bool CCameraControl::QImage2CvMat(const QImage &img, cv::Mat &mat) {
+    try {
+        qDebug()<<"format: "<<img.format();
+        QImage image = img.convertToFormat(QImage::Format_ARGB32);
+        mat = cv::Mat(image.height(),image.width(),CV_8UC4,image.bits(),image.bytesPerLine());
+        return true;
+    }catch(cv::Exception e) {
+        std::cout<<"error: "<<e.what()<<'\n';
+        return false;
+    }
+
+}
+
+
+bool CCameraControl::BlurQimage(const QImage &src, QImage &dst,int radius) {
+    cv::Mat frame;
+    if(QImage2CvMat(src, frame)) {
+        if(radius == 0 || radius % 2!=1) {
+            radius++;
+        }
+        cv::Mat frame2;
+        GaussianBlur(frame, frame2, cv::Size(radius,radius), 0);
+        if(CvMat2QImage(frame2, dst)) {
+            return true;
+        }
+
+    }
+    return false;
 }
 
 // bool CCameraControl::SetTailorSize(int w, int h) {

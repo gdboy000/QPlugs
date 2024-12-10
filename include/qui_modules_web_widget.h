@@ -6,6 +6,7 @@
 #define QUI_MODULES_WEB_WIDGET_H
 
 #include <QWidget>
+#include <ui_qui_modules_web_widget.h>
 
 
 QT_BEGIN_NAMESPACE
@@ -26,7 +27,7 @@ public:
 protected:
     void contextMenuEvent(QContextMenuEvent *event) override;
 private:
-    Ui::CWebModulesWidget *_ui;
+    Ui::CWebmodulesWidget *_ui;
     void _initWidget();//加载widget,当前不需要
 };
 

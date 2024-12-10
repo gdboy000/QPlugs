@@ -13,7 +13,7 @@
 
 
 CWebModulesWidget::CWebModulesWidget(QWidget *parent) :
-    QWidget(parent), _ui(new Ui::CWebModulesWidget) {
+    QWidget(parent), _ui(new Ui::CWebmodulesWidget) {
     _ui->setupUi(this);
     _ui->webView->setContextMenuPolicy(Qt::NoContextMenu);//禁言右键菜单
 }
