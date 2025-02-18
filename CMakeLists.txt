@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+ cmake_minimum_required(VERSION 3.5)
 
 project(hand_cmake VERSION 0.1 LANGUAGES CXX)
 
@@ -10,23 +10,24 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 include_directories(./include/)
 
-find_package(Qt6 REQUIRED COMPONENTS Widgets Xml WebEngineWidgets)
+set(QT6_ROOT D:/DevelopmentKits/Qt/6.8.2/msvc2022_64)
 
 
-#msvc
-if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
-    add_library(OPENCV INTERFACE IMPORTED)
-    set_target_properties(OPENCV PROPERTIES
-                INTERFACE_LINK_LIBRARIES "opencv_world481")
-    include_directories(${OPENCV_DIR}/include)  #头文件
-    link_directories(${OPENCV_DIR}/x64/vc17/lib)  #lib位置
-    file(GLOB OPENCV_DLLS ${OPENCV_DIR}/x64/vc17/bin/*.dll)
+
+if (WIN32)
+    set(Qt6_DIR ${QT6_ROOT}/lib/cmake/Qt6)
+    find_package(Qt6 REQUIRED COMPONENTS Widgets Xml WebEngineWidgets)
+    find_package(OpenCV CONFIG REQUIRED)
+    include_directories(${OpenCV_INCLUDE_DIRS})
+    message(STATUS ${OpenCV_INCLUDE_DIRS})
+else ()
+    find_package(Qt6 REQUIRED COMPONENTS Widgets Xml WebEngineWidgets)
+    find_package(OpenCV REQUIRED)
+    include_directories(${OpenCV_INCLUDE_DIRS})
 endif()
 
 
 
-find_package(OpenCV REQUIRED)
-include_directories(${OpenCV_INCLUDE_DIRS})
 
 FILE(GLOB INCLUDE_FILES "include/*.h")
 FILE(GLOB MODULES_FILES "src/*.cpp")
@@ -35,7 +36,7 @@ FILE(GLOB UI_FILES "interface-file/*.ui")
 
 qt_add_executable(hand_cmake
     MANUAL_FINALIZATION
-    ${INCLUDE_FILES} ${MODULES_FILES} ${UI_FILES}
+    main.cpp ${INCLUDE_FILES} ${MODULES_FILES} ${UI_FILES}
     resource.qrc
 )
 
@@ -45,6 +46,22 @@ qt_add_executable(hand_cmake
 message(STATUS "lib ${OpenCV_LIBS}")
 target_link_libraries(hand_cmake PRIVATE Qt6::Widgets Qt6::Xml Qt6::WebEngineWidgets ${OpenCV_LIBS})
 
+
+## dll
+#file(GLOB OpenCV_DLLS ${OpenCV_INSTALL_PATH}/bin/opencv*.dll)
+##copy dll file
+#add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+#     COMMAND ${CMAKE_COMMAND} -E copy_if_different
+#     ${OpenCV_DLLS} $<TARGET_FILE_DIR:${PROJECT_NAME}>)
+#qt dll
+find_program(WINDEPLOYQT NAMES windeployqt.exe HINTS "${QT6_ROOT}/bin")
+if(MSVC)
+    #copy dll file
+     add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+             COMMAND ${WINDEPLOYQT} $<TARGET_FILE_DIR:${PROJECT_NAME}>
+             COMMENT "Deploying Qt DLLs using windeployqt"
+     )
+endif ()
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
 # explicit, fixed bundle identifier manually though.
