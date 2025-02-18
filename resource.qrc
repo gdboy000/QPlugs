@@ -1,5 +1,42 @@
 <RCC>
-
+    <qresource prefix="/icons">
+        <file>resources/alert.svg</file>
+        <file>resources/alert-f.svg</file>
+        <file>resources/alien-f.svg</file>
+        <file>resources/anchor.svg</file>
+        <file>resources/arrow-right.svg</file>
+        <file>resources/birthday-cake.svg</file>
+        <file>resources/check.svg</file>
+        <file>resources/chevrons-down.svg</file>
+        <file>resources/chevron-square-left.svg</file>
+        <file>resources/chevrons-up.svg</file>
+        <file>resources/close.svg</file>
+        <file>resources/close-rectangle.svg</file>
+        <file>resources/cog.svg</file>
+        <file>resources/cog-f.svg</file>
+        <file>resources/crop.svg</file>
+        <file>resources/door.svg</file>
+        <file>resources/folder.svg</file>
+        <file>resources/folder-open.svg</file>
+        <file>resources/key.svg</file>
+        <file>resources/layout.svg</file>
+        <file>resources/log-out.svg</file>
+        <file>resources/minus.svg</file>
+        <file>resources/minus-rectangle.svg</file>
+        <file>resources/padlock.svg</file>
+        <file>resources/padlock-open.svg</file>
+        <file>resources/pause.svg</file>
+        <file>resources/play.svg</file>
+        <file>resources/power.svg</file>
+        <file>resources/qr-code.svg</file>
+        <file>resources/search.svg</file>
+        <file>resources/square.svg</file>
+        <file>resources/stop.svg</file>
+        <file>resources/volume.svg</file>
+        <file>resources/volume-down.svg</file>
+        <file>resources/volume-up.svg</file>
+        <file>resources/wrench.svg</file>
+    </qresource>
     <qresource prefix="/imgs">
         <file>resources/demo1.jpg</file>
         <file>resources/demo2.jpg</file>

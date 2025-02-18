@@ -1,6 +1,6 @@
  cmake_minimum_required(VERSION 3.5)
 
-project(hand_cmake VERSION 0.1 LANGUAGES CXX)
+project(Qplugs VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
@@ -34,8 +34,8 @@ FILE(GLOB MODULES_FILES "src/*.cpp")
 set(CMAKE_AUTOUIC_SEARCH_PATHS "interface-file")
 FILE(GLOB UI_FILES "interface-file/*.ui")
 
-qt_add_executable(hand_cmake
-    MANUAL_FINALIZATION
+qt_add_executable(${PROJECT_NAME}
+        MANUAL_FINALIZATION
     main.cpp ${INCLUDE_FILES} ${MODULES_FILES} ${UI_FILES}
     resource.qrc
 )
@@ -44,7 +44,7 @@ qt_add_executable(hand_cmake
 #                     COMMAND ${CMAKE_COMMAND} -E copy_if_different
 #                     ${OPENCV_DLLS} $<TARGET_FILE_DIR:${PROJECT_NAME}>)
 message(STATUS "lib ${OpenCV_LIBS}")
-target_link_libraries(hand_cmake PRIVATE Qt6::Widgets Qt6::Xml Qt6::WebEngineWidgets ${OpenCV_LIBS})
+target_link_libraries(${PROJECT_NAME}  PRIVATE Qt6::Widgets Qt6::Xml Qt6::WebEngineWidgets ${OpenCV_LIBS})
 
 
 ## dll
@@ -65,9 +65,9 @@ endif ()
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
 # explicit, fixed bundle identifier manually though.
-set(BUNDLE_ID_OPTION MACOSX_BUNDLE_GUI_IDENTIFIER com.example.hand_cmake)
+set(BUNDLE_ID_OPTION MACOSX_BUNDLE_GUI_IDENTIFIER com.example.${PROJECT_NAME})
 
-set_target_properties(hand_cmake PROPERTIES
+set_target_properties(${PROJECT_NAME}  PROPERTIES
     ${BUNDLE_ID_OPTION}
     MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
     MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
@@ -76,12 +76,12 @@ set_target_properties(hand_cmake PROPERTIES
 )
 
 include(GNUInstallDirs)
-install(TARGETS hand_cmake
-    BUNDLE DESTINATION .
+install(TARGETS ${PROJECT_NAME}
+        BUNDLE DESTINATION .
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
 if(QT_VERSION_MAJOR EQUAL 6)
-    qt_finalize_executable(hand_cmake)
+    qt_finalize_executable(${PROJECT_NAME})
 endif()
